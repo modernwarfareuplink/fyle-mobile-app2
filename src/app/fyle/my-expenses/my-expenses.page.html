@@ -1,4 +1,4 @@
-<ion-header mode="md">
+<ion-header>
   <ion-toolbar class="my-expenses--toolbar-header" mode="md">
     <ion-buttons *ngIf="!navigateBack" mode="md" slot="start">
       <app-fy-menu-icon></app-fy-menu-icon>
@@ -27,23 +27,21 @@
       </ng-container>
     </ion-buttons>
   </ion-toolbar>
-  <ion-toolbar mode="md" class="my-expenses--state-toolbar">
-    <div class="my-expenses--state">
-      <div (click)="setState('all')" [ngClass]="{'my-expenses--state-pill__selected': baseState === 'all'}"
-           class="my-expenses--state-pill my-expenses--state-pill__left" matRipple>
-        All Expenses
-        <span *ngIf="allExpenseCountHeader$|async as allExpensesCount">
+  <ion-toolbar>
+    <ion-segment value="all">
+      <ion-segment-button value="all">
+        <div>All Expenses</div>
+        <!-- <span *ngIf="allExpenseCountHeader$|async as allExpensesCount">
           ({{allExpensesCount}})
-        </span>
-      </div>
-      <div (click)="setState('draft')" [ngClass]="{'my-expenses--state-pill__selected': baseState === 'draft'}"
-           class="my-expenses--state-pill my-expenses--state-pill__right" matRipple>
-        Draft Expenses
-        <span *ngIf="draftExpensesCount$|async as draftExpensesCount">
+        </span> -->
+      </ion-segment-button>
+      <ion-segment-button value="favorites">
+        <div>Draft Expenses</div>
+        <!-- <span *ngIf="draftExpensesCount$|async as draftExpensesCount">
           ({{draftExpensesCount}})
-        </span>
-      </div>
-    </div>
+        </span> -->
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
   <ion-toolbar mode="md">
     <div class="my-expenses--toolbar">
