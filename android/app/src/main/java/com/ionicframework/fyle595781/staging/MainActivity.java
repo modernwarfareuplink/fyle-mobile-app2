@@ -1,4 +1,5 @@
 package com.ionicframework.fyle595781.staging;
+import com.ahm.capacitor.camera.preview.CameraPreview; 
 
 import android.os.Bundle;
 
@@ -16,6 +17,7 @@ public class MainActivity extends BridgeActivity {
     this.init(savedInstanceState, new ArrayList<Class<? extends Plugin>>() {{
       // Additional plugins you've installed go here
       // Ex: add(TotallyAwesomePlugin.class);
+      add(CameraPreview.class); 
     }});
   }
 }
