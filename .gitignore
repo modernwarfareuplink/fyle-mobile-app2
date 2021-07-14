@@ -31,7 +31,7 @@ npm-debug.log*
 /www
 src/environments/environment.prod.ts
 src/environments/environment.staging.ts
-
+hooks
 .gradle
 android/app/google-services.json
 ios

@@ -1,0 +1,7 @@
+{
+    "apps": [{
+        "appId": "63689ec8",
+        "root": "",
+        "webBuildCommand": "ionic build --prod"
+    }]
+}
