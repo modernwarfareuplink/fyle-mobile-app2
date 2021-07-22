@@ -12,6 +12,7 @@ import { StatsComponent } from './stats/stats.component';
 import { ActionSheetController } from '@ionic/angular';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import { FooterState } from '../../shared/components/footer/footer-state';
+import { NPSService } from '../../core/services/nps.service';
 
 enum DashboardState {
   home,
@@ -41,7 +42,8 @@ export class DashboardPage implements OnInit {
     private networkService: NetworkService,
     private actionSheetController: ActionSheetController,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private npsService: NPSService
   ) { }
 
   ionViewWillLeave() {
@@ -100,6 +102,7 @@ export class DashboardPage implements OnInit {
     }).pipe(
       filter(({isGetStartedPopupShown, totalCount}) => !isGetStartedPopupShown && totalCount.count === 0)
     ).subscribe(_ => this.showGetStartedPopup());
+    this.npsService.startSurvey({}, {});
   }
 
   ngOnInit() {
