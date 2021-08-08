@@ -2,6 +2,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 console.log(process.env);
 console.log(process.env.NATIVE_CONFIG);
+if (!process.env.NATIVE_CONFIG) {
+    process.env.NATIVE_CONFIG = `{"base": {"bundle_id": "com.ionicframework.fyle595781", "name": "Fyle"}, "name": "prod"}`;
+}
 const NATIVE_CONFIG  = JSON.parse(process.env.NATIVE_CONFIG);
 
 module.exports = {
