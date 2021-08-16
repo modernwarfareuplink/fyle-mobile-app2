@@ -163,6 +163,14 @@ $ccc-bank-name: #C4CAE8;
     z-index: 999;
   }
 
+  &--ccc-slides {
+    display: inline-block;
+    
+    &__multiple {
+      width: 80% !important;
+    }
+  }
+
   &--ccc-bank-name {
     font-weight: bold;
     font-size: 18px;

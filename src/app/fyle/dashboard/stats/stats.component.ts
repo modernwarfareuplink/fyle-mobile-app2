@@ -41,11 +41,15 @@ export class StatsComponent implements OnInit {
 
   loadData$ = new Subject();
 
-  cardTransactionsAndDetails$: Observable<BankAccountsAssigned>;
+  cardTransactionsAndDetails$: Observable<BankAccountsAssigned[]>;
 
   isCCCStatsLoading: boolean;
 
-  cardTransactionsAndDetails: BankAccountsAssigned;
+  cardTransactionsAndDetails: BankAccountsAssigned[];
+
+  slideOpts = {
+    initialSlide: 1
+  };
 
   get ReportStates() {
     return ReportStates;
@@ -111,11 +115,12 @@ export class StatsComponent implements OnInit {
 
   initializeCCCStats() {
     this.cardTransactionsAndDetails$ = this.dashboardService.getCCCDetails().pipe(
-      map(res => res[0]),
+      map(res => res),
       shareReplay(1)
     );
     this.cardTransactionsAndDetails$.subscribe(details => {
       this.cardTransactionsAndDetails = details;
+      console.log("check the details", this.cardTransactionsAndDetails);
       this.isCCCStatsLoading = false;
     });
   }

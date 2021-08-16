@@ -112,70 +112,78 @@
     <div>
       <ion-grid>
         <ion-row>
-          <ion-col>
+          <ion-col style="display: flex;">
             <div class="stats--header stats--ccc-cards-header"> CARD TRANSACTIONS </div>
+            <span *ngIf="cardTransactionsAndDetails.length > 1"> ({{cardTransactionsAndDetails.length}}) </span>
+            <div>
+              <mat-icon svgIcon='slider'></mat-icon>
+            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
-      <ng-container>
-        <div class="stats--ccc-card-details">
-          <div class="stats--ccc-bank-name1">
-            <ion-grid>
-              <ion-row>
-                <ion-col class="stats--ccc-bank-name" size="8">
-                  <div >
-                    {{ cardTransactionsAndDetails.ba_bank_name }}
+      <ion-slides [options]="slideOpts">
+        <ion-slide *ngFor="let item of cardTransactionsAndDetails" class="stats--ccc-slides" [ngClass]="{'stats--ccc-slides__multiple': cardTransactionsAndDetails.length > 1}">
+          <ng-container>
+            <div class="stats--ccc-card-details">
+              <div class="stats--ccc-bank-name1">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col class="stats--ccc-bank-name" size="8">
+                      <div >
+                        {{ item.ba_bank_name }}
+                      </div>
+                    </ion-col>
+                    <ion-col size="4">
+                      <div class="stats--ccc-card-info"> Corporate Card </div>
+                    </ion-col>
+                  </ion-row>
+                  <ion-row>
+                    <ion-col class="stats--ccc-account-info">
+                      <span class="stats--ccc-account-info__type"> CREDIT </span>
+                      <span class="stats--ccc-account-info__mask">{{ ' xxxx ' + item.ba_mask }}</span>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </div>
+              <div class="stats--ccc-sync-detail"> Last synced: {{ item.ba_last_synced_at | date: 'MMM d, y | h:mm a' }}
+              </div>
+            </div>
+            <div class="stats--ccc-stats">
+              <div class="stats--ccc-created_dt"> Showing all transactions from {{ item.ba_created_at | date: 'MMM d, y' }}
+              </div>
+              <div>
+                <div matRipple (click)="goToCCCPage('classified')">
+                  <div class="stats--ccc-classified-stats">
+                    <div class="stats--ccc-classified-count">
+                      {{ item.total_classified_count }}
+                    </div>
+                    <div class="stats--ccc-classified-amount">
+                      <span class="stats--expenses-amount-currency">
+                        {{currencySymbol$|async}}
+                      </span> {{ item.total_classified_amount | humanizeCurrency: (homeCurrency$|async): 2: true}}
+                    </div>
                   </div>
-                </ion-col>
-                <ion-col size="4">
-                  <div class="stats--ccc-card-info"> Corporate Card </div>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col class="stats--ccc-account-info">
-                  <span class="stats--ccc-account-info__type"> CREDIT </span>
-                  <span class="stats--ccc-account-info__mask">{{ ' xxxx ' + cardTransactionsAndDetails.ba_mask }}</span>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </div>
-          <div class="stats--ccc-sync-detail"> Last synced: {{ cardTransactionsAndDetails.ba_last_synced_at | date: 'MMM d, y | h:mm a' }}
-          </div>
-        </div>
-        <div class="stats--ccc-stats">
-          <div class="stats--ccc-created_dt"> Showing all transactions from {{ cardTransactionsAndDetails.ba_created_at | date: 'MMM d, y' }}
-          </div>
-          <div>
-            <div matRipple (click)="goToCCCPage('classified')">
-              <div class="stats--ccc-classified-stats">
-                <div class="stats--ccc-classified-count">
-                  {{ cardTransactionsAndDetails.total_classified_count }}
+                  <div class="stats--ccc-stats-title"> Classified Transactions </div>
                 </div>
-                <div class="stats--ccc-classified-amount">
-                  <span class="stats--expenses-amount-currency">
-                    {{currencySymbol$|async}}
-                  </span> {{ cardTransactionsAndDetails.total_classified_amount | humanizeCurrency: (homeCurrency$|async): 2: true}}
+                <hr class="stats--ccc-stats-divider">
+                <div matRipple (click)="goToCCCPage('unclassified')">
+                  <div class="stats--ccc-classified-stats stats--ccc-classified-stats__margin-top">
+                    <div class="stats--ccc-classified-count">
+                      {{ item.total_unclassified_count }}
+                    </div>
+                    <div class="stats--ccc-classified-amount">
+                      <span class="stats--expenses-amount-currency">
+                        {{currencySymbol$|async}}
+                      </span> {{ item.total_unclassified_amount | humanizeCurrency: (homeCurrency$|async): 2: true}}
+                    </div>
+                  </div>
+                  <div class="stats--ccc-stats-title"> Unclassified Transactions </div>
                 </div>
               </div>
-              <div class="stats--ccc-stats-title"> Classified Transactions </div>
             </div>
-            <hr class="stats--ccc-stats-divider">
-            <div matRipple (click)="goToCCCPage('unclassified')">
-              <div class="stats--ccc-classified-stats stats--ccc-classified-stats__margin-top">
-                <div class="stats--ccc-classified-count">
-                  {{ cardTransactionsAndDetails.total_unclassified_count }}
-                </div>
-                <div class="stats--ccc-classified-amount">
-                  <span class="stats--expenses-amount-currency">
-                    {{currencySymbol$|async}}
-                  </span> {{ cardTransactionsAndDetails.total_unclassified_amount | humanizeCurrency: (homeCurrency$|async): 2: true}}
-                </div>
-              </div>
-              <div class="stats--ccc-stats-title"> Unclassified Transactions </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
+          </ng-container>
+        </ion-slide>
+      </ion-slides>
       <ng-template #cccStatsLoading>
         <div class="stats--ccc-card-details">
           <ion-grid>
