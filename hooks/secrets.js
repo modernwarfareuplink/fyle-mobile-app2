@@ -2,11 +2,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 console.log(process.env.NATIVE_CONFIG);
 console.log(process.env);
-if(process.env.NATIVE_CONFIG){
+process.env.NATIVE_CONFIG = '{"name": "staging", "base": {"bundle_id": "com.ionicframework.fyle595781.staging", "name": "Fyle Staging"}}';
 const NATIVE_CONFIG = JSON.parse(process.env.NATIVE_CONFIG);
-} else{
-    process.env.NATIVE_CONFIG = '{"name": "staging", "base": {"bundle_id": "com.ionicframework.fyle595781.staging", "name": "Fyle Staging"}}';
-    const NATIVE_CONFIG = JSON.parse(process.env.NATIVE_CONFIG);}
 
 module.exports = {
     googleCredentialsAndroid: `
