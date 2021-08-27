@@ -5,7 +5,7 @@ console.log(process.env);
 if(process.env.NATIVE_CONFIG){
 const NATIVE_CONFIG = JSON.parse(process.env.NATIVE_CONFIG);
 } else{
-    const NATIVE_CONFIG = {};
+    const NATIVE_CONFIG = '{"name": "staging", "base": {"bundle_id": "com.ionicframework.fyle595781.staging", "name": "Fyle Staging"}}';
 }
 
 module.exports = {
