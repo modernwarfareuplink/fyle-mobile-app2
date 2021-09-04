@@ -114,7 +114,7 @@ export class AppComponent implements OnInit {
     if (popupResults === 'primary') {
       App.exitApp();
     }
-  }
+  }     
 
   registerBackButtonAction() {
     this.platform.backButton.subscribeWithPriority(10, () => {
