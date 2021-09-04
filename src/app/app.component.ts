@@ -123,7 +123,7 @@ export class AppComponent implements OnInit {
         this.router.url.includes('tasks') ||
         this.router.url.includes('sign_in')
       ) {
-        this.showAppCloseAlert();
+        this.showAppCloseAlert();     
       } else if (this.router.url.includes('switch_org') || this.router.url.includes('delegated_accounts')) {
         if (this.previousUrl && this.previousUrl.includes('enterprise')) {
           this.navController.back();
