@@ -320,7 +320,6 @@ export class AddEditExpensePage implements OnInit {
     private expenseFieldsService: ExpenseFieldsService,
     private modalProperties: ModalPropertiesService,
     private actionSheetController: ActionSheetController,
-    private taxGroupsService: TaxGroupService,
     private sanitizer: DomSanitizer
   ) {}
 
