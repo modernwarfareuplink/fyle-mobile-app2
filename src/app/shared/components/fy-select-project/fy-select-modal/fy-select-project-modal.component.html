@@ -82,5 +82,8 @@
       <app-fy-highlight-text [fullText]="filteredListItem.label" [queryText]="value"> </app-fy-highlight-text>
       <mat-icon *ngIf="filteredListItem.selected" class="selection-modal--check"> check </mat-icon>
     </div>
+    <div class="selection-modal--list-element" (click)="loadMoreProjects()">
+      <p class="font-italic m-0"><span>Show more projects...</span> (or you can try searching!)</p>
+    </div>
   </div>
 </ion-content>

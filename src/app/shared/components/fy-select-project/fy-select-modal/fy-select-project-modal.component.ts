@@ -47,6 +47,8 @@ export class FyProjectSelectModalComponent implements OnInit, AfterViewInit {
 
   isLoading = false;
 
+  clickedToLoadMore = 0
+
   constructor(
     private modalController: ModalController,
     private cdr: ChangeDetectorRef,
@@ -59,7 +61,7 @@ export class FyProjectSelectModalComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {}
 
-  getProjects(searchNameText) {
+  getProjects(searchNameText, loadMoreOffset) {
     // set isLoading to true
     this.isLoading = true;
     // run ChangeDetectionRef.detectChanges to avoid 'expression has changed after it was checked error'.
@@ -96,7 +98,7 @@ export class FyProjectSelectModalComponent implements OnInit, AfterViewInit {
               orgCategoryIds: this.categoryIds,
               projectIds: allowedProjectIds,
               searchNameText,
-              offset: 0,
+              offset: searchNameText ? 0 : loadMoreOffset,
               limit: 20,
             })
           )
@@ -165,12 +167,17 @@ export class FyProjectSelectModalComponent implements OnInit, AfterViewInit {
     }
   }
 
+  loadMoreProjects() {
+    this.clickedToLoadMore += 1;
+    this.getProjects(null, this.clickedToLoadMore * 20);
+  }
+
   ngAfterViewInit() {
     this.filteredOptions$ = fromEvent(this.searchBarRef.nativeElement, 'keyup').pipe(
       map((event: any) => event.srcElement.value),
       startWith(''),
       distinctUntilChanged(),
-      switchMap((searchText) => this.getProjects(searchText)),
+      switchMap((searchText) => this.getProjects(searchText, 0)),
       map((projects: any[]) =>
         projects.map((project) => {
           if (isEqual(project.value, this.currentSelection)) {
