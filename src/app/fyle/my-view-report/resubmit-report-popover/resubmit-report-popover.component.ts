@@ -102,6 +102,14 @@ export class ResubmitReportPopoverComponent implements OnInit {
     event.stopPropagation();
 
     this.reportService.resubmit(this.erpt.rp_id).subscribe(() => {
+      (function (d, s, id) {
+        var js, rjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://cdn.retently.com/public/components/embed/sdk.min.js";
+        rjs.parentNode.insertBefore(js, rjs);
+      }(document, 'script', 'retently-jssdk'));
       this.popoverController.dismiss({
         goBack: true,
       });
