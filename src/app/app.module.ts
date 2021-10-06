@@ -22,7 +22,6 @@ import { RouterAuthService } from './core/services/router-auth.service';
 import { TokenService } from './core/services/token.service';
 import { StorageService } from './core/services/storage.service';
 import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
-
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     pinch: { enable: false },
@@ -33,7 +32,6 @@ export class MyHammerConfig extends HammerGestureConfig {
 export const MIN_SCREEN_WIDTH = new InjectionToken<number>(
   'Minimum screen width to act as breakpoint between regular and small devices'
 );
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

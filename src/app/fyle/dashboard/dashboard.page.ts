@@ -14,6 +14,7 @@ import { FooterState } from '../../shared/components/footer/footer-state';
 import { TrackingService } from 'src/app/core/services/tracking.service';
 import { TasksComponent } from './tasks/tasks.component';
 import { TasksService } from 'src/app/core/services/tasks.service';
+import { AnimationOptions } from 'ngx-lottie';
 
 enum DashboardState {
   home,
@@ -45,6 +46,10 @@ export class DashboardPage implements OnInit {
   actionSheetButtons = [];
 
   taskCount = 0;
+
+  options: AnimationOptions = {
+    path: '../../../assets/animations/btn-start.json',
+  };
 
   get displayedTaskCount() {
     if (this.activatedRoute.snapshot.queryParams.state === 'tasks') {

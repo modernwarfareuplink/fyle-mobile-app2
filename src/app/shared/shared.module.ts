@@ -90,6 +90,18 @@ import { RouteSelectorModalComponent } from './components/route-selector/route-s
 import { RouteVisualizerComponent } from './components/route-visualizer/route-visualizer.component';
 import { ReceiptPreviewThumbnailComponent } from './components/receipt-preview-thumbnail/receipt-preview-thumbnail.component';
 import { AddApproversPopoverComponent } from './components/fy-approver/add-approvers-popover/add-approvers-popover.component';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+/**
+ * Note we need a separate function as it's required
+ * by the AOT compiler.
+ *
+ * @link https://github.com/ngx-lottie/ngx-lottie
+ */
+export function playerFactory() {
+  return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
+}
 
 @NgModule({
   declarations: [
@@ -181,6 +193,9 @@ import { AddApproversPopoverComponent } from './components/fy-approver/add-appro
     AgmCoreModule,
     AgmDirectionModule,
     MatChipsModule,
+    LottieModule.forRoot({
+      player: playerFactory,
+    }),
   ],
   exports: [
     EllipsisPipe,
