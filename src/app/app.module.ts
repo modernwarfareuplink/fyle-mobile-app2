@@ -22,6 +22,19 @@ import { RouterAuthService } from './core/services/router-auth.service';
 import { TokenService } from './core/services/token.service';
 import { StorageService } from './core/services/storage.service';
 import { HAMMER_GESTURE_CONFIG, HammerGestureConfig } from '@angular/platform-browser';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+/**
+ * Note we need a separate function as it's required
+ * by the AOT compiler.
+ *
+ * @link https://github.com/ngx-lottie/ngx-lottie
+ */
+export function playerFactory() {
+  return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
+}
+
 export class MyHammerConfig extends HammerGestureConfig {
   overrides = <any>{
     pinch: { enable: false },
@@ -46,6 +59,9 @@ export const MIN_SCREEN_WIDTH = new InjectionToken<number>(
     }),
     SharedModule,
     HammerModule,
+    LottieModule.forRoot({
+      player: playerFactory,
+    }),
   ],
   providers: [
     StatusBar,
