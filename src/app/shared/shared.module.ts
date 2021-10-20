@@ -96,6 +96,8 @@ import { DeleteButtonComponent } from './components/bank-account-cards/bank-acco
 import { AddApproversPopoverComponent } from './components/fy-approver/add-approvers-popover/add-approvers-popover.component';
 import { FyPopoverComponent } from './components/fy-popover/fy-popover.component';
 import { PersonalCardTransactionComponent } from './components/personal-card-transaction/personal-card-transaction.component';
+import { ExpenseCardLiteComponent } from './components/expense-card-lite/expense-card-lite.component';
+
 @NgModule({
   declarations: [
     AdvanceState,
@@ -174,6 +176,7 @@ import { PersonalCardTransactionComponent } from './components/personal-card-tra
     DeleteButtonComponent,
     PersonalCardTransactionComponent,
     FyPopoverComponent,
+    ExpenseCardLiteComponent,
   ],
   imports: [
     CommonModule,
@@ -259,6 +262,7 @@ import { PersonalCardTransactionComponent } from './components/personal-card-tra
     BankAccountCardsComponent,
     PersonalCardTransactionComponent,
     FyPopoverComponent,
+    ExpenseCardLiteComponent,
   ],
   providers: [DecimalPipe, DatePipe, HumanizeCurrencyPipe],
 })
