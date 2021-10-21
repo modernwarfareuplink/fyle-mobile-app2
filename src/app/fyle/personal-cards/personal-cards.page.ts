@@ -21,6 +21,7 @@ import { DateService } from 'src/app/core/services/date.service';
 import { FilterPill } from 'src/app/shared/components/fy-filter-pills/filter-pill.interface';
 import * as moment from 'moment';
 import { ApiV2Service } from 'src/app/core/services/api-v2.service';
+import { ExpensePreviewComponent } from '../personal-cards-matched-expenses/expense-preview/expense-preview.component';
 
 type Filters = Partial<{
   amount: string;
@@ -228,6 +229,11 @@ export class PersonalCardsPage implements OnInit, AfterViewInit {
         this.loadData$.next(currentParams);
       });
   }
+
+  // ionViewDidEnter() {
+  //   const currentParams = this.loadData$.getValue();
+  //   this.loadData$.next(currentParams);
+  // }
 
   setupNetworkWatcher() {
     const networkWatcherEmitter = new EventEmitter<boolean>();
@@ -803,5 +809,42 @@ export class PersonalCardsPage implements OnInit, AfterViewInit {
     const params = this.addNewFiltersToParams();
     this.loadData$.next(params);
     this.filterPills = this.generateFilterPills(this.filters);
+  }
+
+  createExpense(txnDetails) {
+    console.log(txnDetails);
+    if (this.selectionMode) {
+      return;
+    }
+    if (txnDetails.btxn_status === 'MATCHED') {
+      this.openExpensePreview(txnDetails);
+      return;
+    }
+
+    this.router.navigate(['/', 'enterprise', 'personal_cards_matched_expenses'], { state: { txnDetails } });
+  }
+
+  async openExpensePreview(txnDetails) {
+    const expenseDetailsModal = await this.modalController.create({
+      component: ExpensePreviewComponent,
+      componentProps: {
+        expenseId: txnDetails.txn_details[0].id,
+        card: txnDetails.ba_account_number,
+        cardTxnId: txnDetails.btxn_id,
+        type: 'unmatch',
+      },
+      cssClass: 'expense-preview-modal',
+      showBackdrop: true,
+      swipeToClose: true,
+      backdropDismiss: true,
+      animated: true,
+    });
+
+    await expenseDetailsModal.present();
+
+    const { data } = await expenseDetailsModal.onWillDismiss();
+
+    const currentParams = this.loadData$.getValue();
+    this.loadData$.next(currentParams);
   }
 }

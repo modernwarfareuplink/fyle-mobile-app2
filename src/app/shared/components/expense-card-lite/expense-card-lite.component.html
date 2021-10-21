@@ -11,9 +11,7 @@
 
     <div
       class="expenses-card--receipt-thumbnail-container expenses-card--with-image"
-      [ngStyle]="{
-        'background-image': (isScanInProgress ? imageTransperencyOverlay : '') + 'url(' + receiptThumbnail + ')'
-      }"
+      style="background-image:url({{ receiptThumbnail }})"
       *ngIf="receiptThumbnail"
     ></div>
 

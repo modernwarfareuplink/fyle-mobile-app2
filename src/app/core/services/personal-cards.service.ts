@@ -133,4 +133,11 @@ export class PersonalCardsService {
       external_expense_id: externalExpenseId,
     });
   }
+
+  unmatchExpense(transactionSplitGroupId: string, externalExpenseId: string): Observable<any> {
+    return this.apiService.post('/transactions/external_expense/unmatch', {
+      transaction_split_group_id: transactionSplitGroupId,
+      external_expense_id: externalExpenseId,
+    });
+  }
 }

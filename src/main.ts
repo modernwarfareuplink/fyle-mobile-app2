@@ -18,7 +18,7 @@ Sentry.init({
     }),
   ],
   tracesSampleRate: 1.0,
-  release: 'please-replace-your-git-commit-version',
+  release: 'undefined',
   ignoreErrors: ['Non-Error exception captured'],
 });
 
