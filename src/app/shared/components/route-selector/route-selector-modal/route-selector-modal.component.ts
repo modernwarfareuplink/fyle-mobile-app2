@@ -53,9 +53,17 @@ export class RouteSelectorModalComponent implements OnInit {
 
   addMileageLocation() {
     this.mileageLocations.insert(
-      this.mileageLocations.length - 1,
+      this.mileageLocations.length,
       new FormControl(null, this.mileageConfig.location_mandatory && Validators.required)
     );
+  }
+
+  returnToStart() {
+    this.mileageLocations.insert(
+      this.mileageLocations.length,
+      new FormControl(null, this.mileageConfig.location_mandatory && Validators.required)
+    );
+    this.mileageLocations.value[this.mileageLocations.length - 1] = this.mileageLocations.value[0];
   }
 
   removeMileageLocation(index: number) {

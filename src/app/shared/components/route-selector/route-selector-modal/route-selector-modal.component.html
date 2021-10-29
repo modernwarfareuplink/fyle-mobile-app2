@@ -67,10 +67,6 @@
                 >
                 </mat-icon>
               </span>
-              <span *ngIf="i === mileageLocations.controls.length - 1 && mileageLocations.controls.length !== 10">
-                <mat-icon svgIcon="fy-plus" (click)="addMileageLocation()" class="route-selector-modal--add-stop">
-                </mat-icon>
-              </span>
             </div>
 
             <div
@@ -92,10 +88,16 @@
     >
     </app-fy-alert-info>
 
-    <div class="route-selector-modal--internal-block" *ngIf="mileageLocations.controls.length < 3">
-      <mat-checkbox [disabled]="isAmountDisabled" formControlName="roundTrip">
-        <span class="route-selector-modal--checkbox"> Round Trip </span>
-      </mat-checkbox>
+    <div class="route-selector-modal--internal-block">
+      <div class="add-stop-btn" (click)="addMileageLocation()" [disabled]="mileageLocations.controls.length !== 10">
+        <mat-icon svgIcon="fy-plus" class="add-stop-btn--icon">
+        </mat-icon>
+        <span class="add-stop-btn--cta">Add Stop</span>
+      </div>
+      <div class="return-to-start-btn" (click)="returnToStart()" [disabled]="mileageLocations.controls.length !== 10">
+        <ion-icon class="return-to-start-btn-icon" name="chevron-down"></ion-icon>
+        <span class="return-to-start-btn--cta">Return to Start</span>
+      </div>
     </div>
   </div>
 </ion-content>

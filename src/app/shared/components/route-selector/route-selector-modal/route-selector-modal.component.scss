@@ -1,5 +1,6 @@
 @import '../../../../../theme/colors.scss';
 @import '../../../../../theme/timeline.scss';
+@import '../../../../../theme/forms.scss';
 
 .route-selector-modal {
   &--body {
@@ -85,6 +86,7 @@
     line-height: 1;
     margin-bottom: 12px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
 
     &__invalid {
