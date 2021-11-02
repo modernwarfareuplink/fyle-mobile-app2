@@ -3,6 +3,7 @@ import { CommonModule, DatePipe, DecimalPipe } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatChipsModule } from '@angular/material/chips';
+import { SwiperModule } from 'swiper/angular';
 
 // pipe imports
 import { EllipsisPipe } from './pipes/ellipses.pipe';
@@ -36,6 +37,7 @@ import { FyMenuIconComponent } from './components/fy-menu-icon/fy-menu-icon.comp
 import { FyViewAttachmentComponent } from './components/fy-view-attachment/fy-view-attachment.component';
 import { FyHighlightTextComponent } from './components/fy-highlight-text/fy-highlight-text.component';
 import { FyLoadingScreenComponent } from './components/fy-loading-screen/fy-loading-screen.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // component imports
 import { DelegatedAccMessageComponent } from './components/delegated-acc-message/delegated-acc-message.component';
@@ -57,7 +59,6 @@ import { PinchZoomModule } from 'ngx-pinch-zoom';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FyZeroStateComponent } from './components/fy-zero-state/fy-zero-state.component';
 import { FyPopupComponent } from './components/fy-popup/fy-popup.component';
-import { FyFlagExpenseComponent } from './components/fy-flag-expense/fy-flag-expense.component';
 import { FyPolicyViolationInfoComponent } from './components/fy-policy-violation-info/fy-policy-violation-info.component';
 import { FyAddToReportComponent } from './components/fy-add-to-report/fy-add-to-report.component';
 import { FyAddToReportModalComponent } from './components/fy-add-to-report/fy-add-to-report-modal/fy-add-to-report-modal.component';
@@ -89,9 +90,14 @@ import { RouteSelectorComponent } from './components/route-selector/route-select
 import { RouteSelectorModalComponent } from './components/route-selector/route-selector-modal/route-selector-modal.component';
 import { RouteVisualizerComponent } from './components/route-visualizer/route-visualizer.component';
 import { ReceiptPreviewThumbnailComponent } from './components/receipt-preview-thumbnail/receipt-preview-thumbnail.component';
+import { BankAccountCardsComponent } from './components/bank-account-cards/bank-account-cards.component';
+import { BankAccountCardComponent } from './components/bank-account-cards/bank-account-card/bank-account-card.component';
+import { DeleteButtonComponent } from './components/bank-account-cards/bank-account-card/delete-button/delete-button-component';
 import { AddApproversPopoverComponent } from './components/fy-approver/add-approvers-popover/add-approvers-popover.component';
 import { ExpenseCardLiteComponent } from './components/expense-card-lite/expense-card-lite.component';
 
+import { FyPopoverComponent } from './components/fy-popover/fy-popover.component';
+import { PersonalCardTransactionComponent } from './components/personal-card-transaction/personal-card-transaction.component';
 @NgModule({
   declarations: [
     AdvanceState,
@@ -131,7 +137,6 @@ import { ExpenseCardLiteComponent } from './components/expense-card-lite/expense
     FyPreviewAttachmentsComponent,
     FyCategoryIconComponent,
     FyMenuIconComponent,
-    FyFlagExpenseComponent,
     FyPolicyViolationInfoComponent,
     FyAddToReportComponent,
     FyAddToReportModalComponent,
@@ -161,8 +166,16 @@ import { ExpenseCardLiteComponent } from './components/expense-card-lite/expense
     RouteSelectorComponent,
     RouteSelectorModalComponent,
     PolicyViolationDetailsComponent,
+    BankAccountCardsComponent,
+    BankAccountCardComponent,
+    DeleteButtonComponent,
     AddApproversPopoverComponent,
     ExpenseCardLiteComponent,
+    BankAccountCardsComponent,
+    BankAccountCardComponent,
+    DeleteButtonComponent,
+    PersonalCardTransactionComponent,
+    FyPopoverComponent,
   ],
   imports: [
     CommonModule,
@@ -183,6 +196,8 @@ import { ExpenseCardLiteComponent } from './components/expense-card-lite/expense
     AgmCoreModule,
     AgmDirectionModule,
     MatChipsModule,
+    SwiperModule,
+    MatSnackBarModule,
   ],
   exports: [
     EllipsisPipe,
@@ -216,7 +231,6 @@ import { ExpenseCardLiteComponent } from './components/expense-card-lite/expense
     FyPreviewAttachmentsComponent,
     FyCategoryIconComponent,
     FyMenuIconComponent,
-    FyFlagExpenseComponent,
     FyPolicyViolationInfoComponent,
     FyAddToReportComponent,
     FySelectProjectComponent,
@@ -245,6 +259,9 @@ import { ExpenseCardLiteComponent } from './components/expense-card-lite/expense
     MatChipsModule,
     PolicyViolationDetailsComponent,
     ExpenseCardLiteComponent,
+    BankAccountCardsComponent,
+    PersonalCardTransactionComponent,
+    FyPopoverComponent,
   ],
   providers: [DecimalPipe, DatePipe, HumanizeCurrencyPipe],
 })
