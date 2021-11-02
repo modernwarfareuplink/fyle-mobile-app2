@@ -2,7 +2,6 @@
   [currentState]="headerState"
   [navigateBack]="navigateBack"
   [title]="'Personal Cards'"
-  (simpleSearchCancel)="onSimpleSearchCancel()"
   (multiselectBack)="switchSelectionMode()"
 >
   <ng-container base>
@@ -13,7 +12,7 @@
     </ion-buttons>
   </ng-container>
   <ng-container personalCardContent *ngIf="!isLoading">
-    <ion-toolbar>
+    <ion-toolbar mode="ios">
       <ion-segment
         class="personal-cards-segment-block"
         (ionChange)="segmentChanged($event)"
@@ -30,7 +29,7 @@
 </app-fy-header>
 
 <ion-content class="personal-cards--content">
-  <ng-container *ngIf="isLoading">
+  <ng-container *ngIf="isLoading && ((linkedAccountsCount$ | async) !== 0)">
     <div class="ion-padding">
       <ion-skeleton-text class="personal-cards--bank-account-shimmer" animated></ion-skeleton-text>
     </div>
@@ -98,6 +97,7 @@
         <ng-container *ngIf="transactions$ | async as transactions">
           <ng-container *ngFor="let transaction of transactions; let i = index">
             <app-personal-card-transaction
+              (click)="createExpense(transaction)"
               *ngIf="!isTrasactionsLoading"
               [description]="transaction.btxn_description"
               [amount]="transaction.btxn_amount"

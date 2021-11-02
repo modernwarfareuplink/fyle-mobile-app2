@@ -398,4 +398,18 @@ export class PersonalCardsPage implements OnInit, AfterViewInit {
   onSearchBarFocus() {
     this.isSearchBarFocused = true;
   }
+
+  createExpense(txnDetails) {
+    console.log(txnDetails);
+    if (this.selectionMode) {
+      return;
+    }
+    if (txnDetails.btxn_status === 'MATCHED') {
+      alert('model will open on another PR :)');
+      // this.openExpensePreview(txnDetails);
+      return;
+    }
+
+    this.router.navigate(['/', 'enterprise', 'personal_cards_matched_expenses'], { state: { txnDetails } });
+  }
 }
