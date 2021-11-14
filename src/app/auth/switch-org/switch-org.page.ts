@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, from, fromEvent, noop, Observable } from 'rxjs';
-import { distinctUntilChanged, finalize, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
+import { distinctUntilChanged, finalize, map, shareReplay, startWith, switchMap, take, tap } from 'rxjs/operators';
 import { Org } from 'src/app/core/models/org.model';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { OfflineService } from 'src/app/core/services/offline.service';
@@ -23,6 +23,7 @@ import { globalCacheBusterNotifier } from 'ts-cacheable';
 import * as Sentry from '@sentry/angular';
 import { RecentLocalStorageItemsService } from 'src/app/core/services/recent-local-storage-items.service';
 import { TrackingService } from 'src/app/core/services/tracking.service';
+import { OrgUserService } from 'src/app/core/services/org-user.service';
 
 @Component({
   selector: 'app-swicth-org',
@@ -53,7 +54,8 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
     private userEventService: UserEventService,
     private recentLocalStorageItemsService: RecentLocalStorageItemsService,
     private cdRef: ChangeDetectorRef,
-    private trackingService: TrackingService
+    private trackingService: TrackingService,
+    private orgUserService: OrgUserService
   ) {}
 
   ngOnInit() {}
@@ -136,6 +138,22 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
           if (roles.indexOf('OWNER') > -1) {
             this.router.navigate(['/', 'post_verification', 'setup_account']);
           } else {
+            from(this.loaderService.showLoader())
+            .pipe(
+              switchMap(() => {
+                const user = eou.us;
+                return this.orgUserService.postUser(user);
+              }),
+              tap(() => this.trackingService.setupComplete()),
+              switchMap(() => this.authService.refreshEou()),
+              switchMap(() => this.orgUserService.markActive()),
+              tap(() => this.trackingService.activated()),
+              finalize(async () => await this.loaderService.hideLoader())
+            )
+            .subscribe(() => {
+              this.router.navigate(['/', 'enterprise', 'my_dashboard']);
+              // return $state.go('enterprise.my_dashboard');
+            });
             this.router.navigate(['/', 'post_verification', 'invited_user']);
           }
         } else if (eou.ou.status === 'ACTIVE') {
