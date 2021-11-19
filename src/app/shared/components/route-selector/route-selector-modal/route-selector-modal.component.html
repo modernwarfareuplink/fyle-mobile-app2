@@ -89,14 +89,13 @@
     </app-fy-alert-info>
 
     <div class="route-selector-modal--internal-block">
-      <div class="add-stop-btn" (click)="addMileageLocation()" [disabled]="mileageLocations.controls.length !== 10">
-        <mat-icon svgIcon="fy-plus" class="add-stop-btn--icon">
-        </mat-icon>
-        <span class="add-stop-btn--cta">Add Stop</span>
+      <div class="add-stop-btn" (click)="addMileageLocation()" [disabled]="mileageLocations.controls.length === 10">
+        <mat-icon class="add-stop-btn--icon" svgIcon="plus"></mat-icon>
+        <div class="add-stop-btn--cta">Add Stop</div>
       </div>
-      <div class="return-to-start-btn" (click)="returnToStart()" [disabled]="mileageLocations.controls.length !== 10">
-        <ion-icon class="return-to-start-btn-icon" name="chevron-down"></ion-icon>
-        <span class="return-to-start-btn--cta">Return to Start</span>
+      <div class="return-to-start-btn" (click)="returnToStart()" [disabled]="mileageLocations.controls.length === 10">
+        <mat-icon class="return-to-start-btn--icon" svgIcon="return-home"></mat-icon>
+        <div class="return-to-start-btn--cta">Return to Start</div>
       </div>
     </div>
   </div>

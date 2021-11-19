@@ -21,14 +21,16 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 12px;
 
   &--icon {
     fill: $brand-primary;
+    height: 14px;
   }
 
   &--cta {
-    margin-left: 12px;
+    margin-left: 8px;
+    font-size: 12px;
+    color: $black-light;
   }
 }
 
@@ -37,13 +39,16 @@
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  height: 12px;
+  margin-left: 36px;
 
   &--icon {
     fill: $brand-primary;
+    height: 14px;
   }
 
   &--cta {
-    margin-left: 12px;
+    margin-left: 8px;
+    font-size: 12px;
+    color: $black-light;
   }
 }
