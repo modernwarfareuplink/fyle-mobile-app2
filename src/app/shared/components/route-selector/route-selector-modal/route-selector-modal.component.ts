@@ -63,7 +63,7 @@ export class RouteSelectorModalComponent implements OnInit {
       this.mileageLocations.length,
       new FormControl(null, this.mileageConfig.location_mandatory && Validators.required)
     );
-    this.mileageLocations.value[this.mileageLocations.length - 1] = this.mileageLocations.value[0];
+    this.mileageLocations.controls[this.mileageLocations.length - 1].patchValue(this.mileageLocations.value[0]);
   }
 
   removeMileageLocation(index: number) {
