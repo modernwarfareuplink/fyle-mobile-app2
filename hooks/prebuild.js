@@ -5,7 +5,7 @@ const stat = util.promisify(fs.stat);
 const dotenv = require('dotenv');
 dotenv.config();
 const secrets = require('./secrets');
-
+console.log(secrets);
 module.exports = function (ctx) {
   // Creating environment.prod.ts file
   fs.writeFileSync(`${ctx.project.dir}` + "/src/environments/environment.prod.ts", secrets.prodEnviroinent);
