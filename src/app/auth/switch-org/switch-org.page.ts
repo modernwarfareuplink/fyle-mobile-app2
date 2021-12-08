@@ -1,15 +1,7 @@
-import {
-  AfterViewChecked,
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewChecked, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, from, fromEvent, noop, Observable } from 'rxjs';
-import { distinctUntilChanged, finalize, map, shareReplay, startWith, switchMap, take } from 'rxjs/operators';
+import { forkJoin, from, fromEvent, noop, Observable, of } from 'rxjs';
+import { distinctUntilChanged, finalize, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 import { Org } from 'src/app/core/models/org.model';
 import { LoaderService } from 'src/app/core/services/loader.service';
 import { OfflineService } from 'src/app/core/services/offline.service';
@@ -23,13 +15,18 @@ import { globalCacheBusterNotifier } from 'ts-cacheable';
 import * as Sentry from '@sentry/angular';
 import { RecentLocalStorageItemsService } from 'src/app/core/services/recent-local-storage-items.service';
 import { TrackingService } from 'src/app/core/services/tracking.service';
+import { DeviceService } from 'src/app/core/services/device.service';
 
 @Component({
-  selector: 'app-swicth-org',
+  selector: 'app-switch-org',
   templateUrl: './switch-org.page.html',
   styleUrls: ['./switch-org.page.scss'],
 })
-export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
+export class SwitchOrgPage implements OnInit, AfterViewChecked {
+  @ViewChild('search') searchRef: ElementRef;
+
+  @ViewChild('content') contentRef: ElementRef;
+
   @ViewChild('searchOrgsInput') searchOrgsInput: ElementRef;
 
   orgs$: Observable<Org[]>;
@@ -39,6 +36,12 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
   searchInput = '';
 
   isLoading = false;
+
+  activeOrg$: Observable<Org>;
+
+  primaryOrg$: Observable<Org>;
+
+  navigateBack = false;
 
   constructor(
     private offlineService: OfflineService,
@@ -53,7 +56,8 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
     private userEventService: UserEventService,
     private recentLocalStorageItemsService: RecentLocalStorageItemsService,
     private cdRef: ChangeDetectorRef,
-    private trackingService: TrackingService
+    private trackingService: TrackingService,
+    private deviceService: DeviceService
   ) {}
 
   ngOnInit() {}
@@ -69,7 +73,7 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
     that.orgs$ = that.offlineService.getOrgs().pipe(shareReplay(1));
 
     that.orgs$.subscribe(() => {
-      that.isLoading = false;
+      setTimeout(() => (that.isLoading = false), 500);
       that.cdRef.detectChanges();
     });
 
@@ -88,6 +92,25 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
         }
       });
     }
+    this.activeOrg$ = this.offlineService.getCurrentOrg();
+
+    this.primaryOrg$ = this.offlineService.getPrimaryOrg();
+
+    this.activeOrg$.subscribe(noop);
+    this.primaryOrg$.subscribe(noop);
+
+    const currentOrgs$ = forkJoin([this.orgs$, this.activeOrg$]).pipe(
+      switchMap(([orgs, activeOrg]) => of(orgs.filter((org) => org.id !== activeOrg.id)))
+    );
+
+    this.filteredOrgs$ = fromEvent(this.searchOrgsInput.nativeElement, 'keyup').pipe(
+      map((event: any) => event.srcElement.value),
+      startWith(''),
+      distinctUntilChanged(),
+      switchMap((searchText) => currentOrgs$.pipe(map((orgs) => this.getOrgsWhichContainSearchText(orgs, searchText))))
+    );
+
+    this.navigateBack = !!this.activatedRoute.snapshot.params.navigate_back;
   }
 
   async proceed() {
@@ -189,6 +212,32 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
       );
   }
 
+  signOut() {
+    try {
+      forkJoin({
+        device: this.deviceService.getDeviceInfo(),
+        eou: from(this.authService.getEou()),
+      })
+        .pipe(
+          switchMap(({ device, eou }) =>
+            this.authService.logout({
+              device_id: device.uuid,
+              user_id: eou.us.id,
+            })
+          ),
+          finalize(() => {
+            this.storageService.clearAll();
+            globalCacheBusterNotifier.next();
+            this.userEventService.logout();
+          })
+        )
+        .subscribe(noop);
+    } catch (e) {
+      this.storageService.clearAll();
+      globalCacheBusterNotifier.next();
+    }
+  }
+
   getOrgsWhichContainSearchText(orgs: Org[], searchText: string) {
     return orgs.filter((org) =>
       Object.values(org)
@@ -198,14 +247,22 @@ export class SwitchOrgPage implements OnInit, AfterViewInit, AfterViewChecked {
     );
   }
 
-  ngAfterViewInit(): void {
-    const currentOrgs$ = this.offlineService.getOrgs().pipe(shareReplay(1));
+  resetSearch() {
+    this.searchInput = '';
+    const searchInputElement = this.searchOrgsInput.nativeElement as HTMLInputElement;
+    searchInputElement.value = '';
+    searchInputElement.dispatchEvent(new Event('keyup'));
+  }
 
-    this.filteredOrgs$ = fromEvent(this.searchOrgsInput.nativeElement, 'keyup').pipe(
-      map((event: any) => event.srcElement.value),
-      startWith(''),
-      distinctUntilChanged(),
-      switchMap((searchText) => currentOrgs$.pipe(map((orgs) => this.getOrgsWhichContainSearchText(orgs, searchText))))
-    );
+  openSearchBar() {
+    this.contentRef.nativeElement.classList.add('switch-org__content-container__content-block--hide');
+    this.searchRef.nativeElement.classList.add('switch-org__content-container__search-block--show');
+    setTimeout(() => this.searchOrgsInput.nativeElement.focus(), 200);
+  }
+
+  cancelSearch() {
+    this.resetSearch();
+    this.contentRef.nativeElement.classList.remove('switch-org__content-container__content-block--hide');
+    this.searchRef.nativeElement.classList.remove('switch-org__content-container__search-block--show');
   }
 }
